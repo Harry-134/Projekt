@@ -51,12 +51,22 @@ def check_password_hibp(password):
     except Exception:
         return False
 
+def generate_safe_password(length=12, max_attempts=10):
+    """Generate one password not present in HIBP (tries up to max_attempts)."""
+    attempt = 0
+    last = None
+    while attempt < max_attempts:
+        pwd = generate_password(length)
+        last = pwd
+        if check_password_hibp(pwd):
+            attempt += 1
+            continue
+        return pwd
+    return last
+
 if __name__ == "__main__":
     # Generate a password
     pwd = generate_password(length=16)
     print(f"Generated Password: {pwd}")
     
-    # Generate multiple passwords
-    print("\nMultiple passwords:")
-    for i in range(5):
-        print(f"{i+1}. {generate_password()}")
+   
