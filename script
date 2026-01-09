@@ -22,6 +22,21 @@ def generate_password(length=12, use_uppercase=True, use_lowercase=True, use_dig
 
     return ''.join(random.choice(characters) for _ in range(length))
 
+
+def check_network_connection():
+    """Return True if internet is reachable; on failure print a blank line and return False."""
+    if requests is None:
+        # requests not installed
+        print()
+        return False
+    try:
+        requests.get("https://www.google.com", timeout=2)
+        return True
+    except Exception:
+        print()
+        return False
+
+
 def check_password_hibp(password):
     """Check password against Have I Been Pwned using the k-anonymity API.
     Returns True if found (compromised), False otherwise.
@@ -60,10 +75,18 @@ def generate_safe_password(length=12, max_attempts=10):
         return pwd
     return last
 
-
 if __name__ == '__main__':
-   
+    # Check network; print blank and exit if no connection
+    if not check_network_connection():
+        sys.exit(1)
+
     pwd = generate_safe_password(length=16)
+
+    # Skriv lösenordet lokalt i filen "temppwd"
+    with open("temppwd.txt", "a", encoding="utf-8") as f:
+        f.write(pwd + "\n")
+
     print("\n" + "=" * 50)
     print(pwd)
     print("=" * 50)
+
