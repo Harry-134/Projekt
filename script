@@ -4,12 +4,10 @@ import hashlib
 import sys
 import requests
 
+
 def generate_password(length=12, use_uppercase=True, use_lowercase=True, use_digits=True, use_special=True):
-    """
-    Generate a random password with specified criteria.
-    """
+    """Generate a random password with specified criteria."""
     characters = ""
-    
     if use_uppercase:
         characters += string.ascii_uppercase
     if use_lowercase:
@@ -18,14 +16,11 @@ def generate_password(length=12, use_uppercase=True, use_lowercase=True, use_dig
         characters += string.digits
     if use_special:
         characters += string.punctuation
-    
+
     if not characters:
         raise ValueError("No character types selected")
 
     return ''.join(random.choice(characters) for _ in range(length))
-    
-    password = ''.join(random.choice(characters) for _ in range(length))
-    return password
 
 def check_password_hibp(password):
     """Check password against Have I Been Pwned using the k-anonymity API.
@@ -51,6 +46,7 @@ def check_password_hibp(password):
     except Exception:
         return False
 
+
 def generate_safe_password(length=12, max_attempts=10):
     """Generate one password not present in HIBP (tries up to max_attempts)."""
     attempt = 0
@@ -64,9 +60,10 @@ def generate_safe_password(length=12, max_attempts=10):
         return pwd
     return last
 
-if __name__ == "__main__":
-    # Generate a password
-    pwd = generate_password(length=16)
-    print(f"Generated Password: {pwd}")
-    
+
+if __name__ == '__main__':
    
+    pwd = generate_safe_password(length=16)
+    print("\n" + "=" * 50)
+    print(pwd)
+    print("=" * 50)
