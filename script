@@ -1,6 +1,7 @@
 import random
 import string
 import hashlib
+import sys
 
 def generate_password(length=12, use_uppercase=True, use_lowercase=True, use_digits=True, use_special=True):
     """
