@@ -3,7 +3,6 @@ import string
 import hashlib
 import sys
 import requests
-# hej testar detta script
 
 def generate_password(length=12, use_uppercase=True, use_lowercase=True, use_digits=True, use_special=True):
     """Generate a random password with specified criteria."""
@@ -81,10 +80,6 @@ if __name__ == '__main__':
         sys.exit(1)
 
     pwd = generate_safe_password(length=16)
-
-    # Skriv lösenordet lokalt i filen "temppwd"
-    with open("temppwd.txt", "a", encoding="utf-8") as f:
-        f.write(pwd + "\n")
 
     print("\n" + "=" * 50)
     print(pwd)
