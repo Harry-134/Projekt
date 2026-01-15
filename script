@@ -1,3 +1,4 @@
+import platform
 import random
 import string
 import hashlib
@@ -75,6 +76,11 @@ def generate_safe_password(length=12, max_attempts=10):
     return last
 
 if __name__ == '__main__':
+
+    # Verify OS to ensure compatibility
+    current_os = platform.system()
+    print(f"--- System Check: Running on {current_os} ---")
+
     # Check network; print blank and exit if no connection
     if not check_network_connection():
         sys.exit(1)
