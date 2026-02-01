@@ -77,6 +77,15 @@ def generate_safe_password(length=12, special_level="normal", max_attempts=15):
     
     return last_password, True  
 
+if __name__ == '__main__':
+
+    # Verify OS to ensure compatibility
+    current_os = platform.system()
+    print(f"--- System Check: Running on {current_os} ---")
+
+    # Check network; print blank and exit if no connection
+    if not check_network_connection():
+        sys.exit(1)
 
 def main():
     print("\n=== Lösenordsgenerator ===\n")
