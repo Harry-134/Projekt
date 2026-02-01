@@ -1,5 +1,4 @@
-import platform
-import random
+import secrets
 import string
 import hashlib
 import sys
@@ -8,18 +7,16 @@ import requests
 
 def generate_password(length, use_uppercase=True, use_lowercase=True, 
                      use_digits=True, special_level="normal"):
-    """Genererar ett slumpmässigt lösenord med valda kriterier"""
     
     lowercase = string.ascii_lowercase if use_lowercase else ""
     uppercase = string.ascii_uppercase if use_uppercase else ""
     digits = string.digits if use_digits else ""
     
-    # Olika nivåer av specialtecken
     if special_level == "simple":
         special = "!?#$%&@"
     elif special_level == "advanced":
-        special = string.punctuation  # Alla vanliga specialtecken
-    else:  # "none" eller okänt värde
+        special = string.punctuation           
+    else:  
         special = ""
     
     all_characters = lowercase + uppercase + digits + special
@@ -27,7 +24,7 @@ def generate_password(length, use_uppercase=True, use_lowercase=True,
     if not all_characters:
         raise ValueError("Inga tecken valda - omöjligt att skapa lösenord")
     
-    return ''.join(random.choice(all_characters) for _ in range(length))
+    return ''.join(secrets.choice(all_characters) for _ in range(length))
 
 
 def check_network_connection():
@@ -75,10 +72,10 @@ def generate_safe_password(length=12, special_level="normal", max_attempts=15):
             attempt += 1
             continue
             
-        return pwd, False  # False = inte hittad i läckor
+        return pwd, False 
     
-    # Om vi inte lyckades hitta ett "rent" lösenord
-    return last_password, True  # True = fick ge upp efter max_attempts
+    
+    return last_password, True  
 
 if __name__ == '__main__':
 
@@ -118,14 +115,9 @@ def main():
             break
         print("Välj 0, 1 eller 2 tack.\n")
 
-    print("\n" + "=" * 50)
-    print(pwd)
-    print("=" * 50)
-    print("\nGenererar lösenord", end="", flush=True)
+    print("\nGenererar säkert lösenord", end="", flush=True)
     for _ in range(5):
         print(".", end="", flush=True)
-        sys.stdout.flush()
-        # Här skulle vi kunna göra ett riktigt försök att hitta ett bra lösenord
     print()
 
     password, was_compromised = generate_safe_password(
@@ -136,7 +128,7 @@ def main():
 
     print("\n" + "=" * 60)
     print("Ditt lösenord:")
-    print(f" -->  {password}  <--")
+    print(f"  →  {password}  ←")
     print(f"  Längd: {len(password)} tecken")
     
     if was_compromised:
@@ -145,12 +137,11 @@ def main():
         print("Verkar inte finnas i kända läckor (HIBP)")
     print("=" * 60)
     
-
-
 if __name__ == '__main__':
     if not check_network_connection():
-        print("Ingen internetanslutning -> kan inte kolla Have I Been Pwned")
-        print("Genererar lösenord ändå...\n")
+        print("Ingen internet -> kan inte kolla HIBP")
+        print("Genererar lösenord ändå (med secrets)...\n")
+        
         password = generate_password(length=12, special_level="advanced")
         print("=" * 50)
         print(password)
